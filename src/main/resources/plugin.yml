@@ -1,0 +1,11 @@
+name: BigAcacia
+version: 1.0
+main: dev.geri.bigacacia.BigAcacia
+api-version: 1.13
+prefix: BigAcacia
+authors: [ Geri, znopp ]
+website: https://geri.dev/
+commands:
+  bigacacia:
+    description: All the commands related to the Big Acacia plugin
+    permission: bigacacia.use

@@ -6,6 +6,6 @@ prefix: BigAcacia
 authors: [ Geri, znopp ]
 website: https://geri.dev/
 commands:
-  bigacacia:
+  acacia:
     description: All the commands related to the Big Acacia plugin
-    permission: bigacacia.use
+    permission: bigacacia.command

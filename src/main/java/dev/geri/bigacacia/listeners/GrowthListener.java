@@ -4,10 +4,7 @@ import dev.geri.bigacacia.BigAcacia;
 import dev.geri.bigacacia.utils.CustomBlock;
 import dev.geri.bigacacia.utils.TreeUtils;
 import dev.geri.bigacacia.utils.Utils;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Tag;
-import org.bukkit.TreeType;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -67,15 +64,25 @@ public class GrowthListener implements Listener {
         }
 
         // See any existing blocks
+        boolean cancel = false;
         for (CustomBlock customBlock : blocks) {
             Block block = customBlock.getBlock(northWestCorner);
 
             // Check if it's not air, the sapling or leaves
             if (block == null || (block.getType() != Material.AIR && block.getType() != Material.ACACIA_LOG && block.getType() != Material.ACACIA_SAPLING && !Tag.LEAVES.isTagged(block.getType()))) {
-                e.setCancelled(true);
+                cancel = true;
+
                 utils.sendDebugMessage("There was a block blocking tree growth: " + (block != null ? block.toString() : customBlock.toString()));
-                return;
+
+                if (block != null) {
+                    block.getWorld().spawnParticle(Particle.BLOCK_CRACK, block.getX() + 0.5, block.getY()+0.5, block.getZ() + 0.5, 50, 0.5, 0.5, 0.5 , 1, block.getType().createBlockData());
+                }
             }
+        }
+
+        if (cancel) {
+            e.setCancelled(true);
+            return;
         }
 
         // Delete saplings just in case

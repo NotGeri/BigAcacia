@@ -29,11 +29,10 @@ public final class BigAcacia extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-
-        // Load config
-        FileConfiguration config = this.getConfig();
+        // Load configuration
         this.saveDefaultConfig();
-        this.treeUtils = new TreeUtils(this, config, saplingMaterial);
+        FileConfiguration config = this.getConfig();
+        TreeUtils treeUtils = new TreeUtils(this, utils, config, saplingMaterial);
 
         // Register events
         Bukkit.getPluginManager().registerEvents(new GrowthListener(this, utils, treeUtils), this);
@@ -72,7 +71,6 @@ public final class BigAcacia extends JavaPlugin implements Listener {
      * @param location The location to set it to
      */
     public void setPosition(Player player, int position, Location location) {
-
         switch (position) {
             case 0 -> posOrigin.put(player, location);
             case 1 -> pos1.put(player, location);

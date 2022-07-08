@@ -249,17 +249,18 @@ public class TreeUtils {
     }
 
     /**
-     * Get all the {@link CustomBlock}-s of a random tree based on the loaded chances
+     * Get all the {@link CustomBlock}-s of a random tree
      *
-     * @return A list of all the blocks of a selected random tree
+     * @return A list of all the blocks of a selected random tree or null if there are none loaded
      */
     public ArrayList<CustomBlock> getRandomTreeBlocks() {
+        if (trees.isEmpty()) return null;
+
         Random random = new Random();
         int index = random.nextInt(0, trees.size());
 
         Tree[] values = trees.values().toArray(new Tree[0]);
 
-        // todo
         return values[index].getBlocks();
     }
 
@@ -290,4 +291,5 @@ public class TreeUtils {
     public Tree getTreeByName(String name) {
         return trees.get(name);
     }
+
 }

@@ -61,7 +61,7 @@ public class AcaciaCommand implements TabExecutor {
                     return true;
                 }
 
-                String variation = args[1];
+                String name = args[1];
 
                 Location posOrigin = plugin.getPosition(player, 0);
                 Location pos1 = plugin.getPosition(player, 1);
@@ -83,9 +83,10 @@ public class AcaciaCommand implements TabExecutor {
                 }
 
                 try {
-                    treeUtils.saveTree(variation, posOrigin, pos1, pos2);
+                    treeUtils.saveTree(name, posOrigin, pos1, pos2);
                 } catch (Exception exception) {
-                    exception.printStackTrace();//todo
+                    player.sendMessage(utils.formatMessage("&4&lERROR&f: &cUnable to save tree, please contact an administrator!"));
+                    logger.severe("Unable to save tree '" + name + "': " + exception.getMessage());
                     return true;
                 }
 
@@ -95,6 +96,11 @@ public class AcaciaCommand implements TabExecutor {
             case "list" -> {
                 if (!player.hasPermission("bigacacia.list")) {
                     player.sendMessage(utils.formatMessage("&4&lERROR&f: &cYou do not have access to this command!"));
+                    return true;
+                }
+
+                if (treeUtils.getTrees().size() == 0) {
+                    player.sendMessage(utils.formatMessage("&4&lERROR&f: &cThere are no trees to list!"));
                     return true;
                 }
 

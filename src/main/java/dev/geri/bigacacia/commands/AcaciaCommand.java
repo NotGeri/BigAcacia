@@ -15,17 +15,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 public class AcaciaCommand implements TabExecutor {
 
     private final BigAcacia plugin;
     private final Utils utils;
     private final TreeUtils treeUtils;
+    private final Logger logger;
 
     public AcaciaCommand(BigAcacia plugin, Utils utils, TreeUtils treeUtils) {
         this.plugin = plugin;
         this.utils = utils;
         this.treeUtils = treeUtils;
+        this.logger = plugin.getLogger();
     }
 
     @Override

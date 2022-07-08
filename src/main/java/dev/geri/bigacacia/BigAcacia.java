@@ -19,8 +19,8 @@ import java.util.logging.Logger;
 
 public final class BigAcacia extends JavaPlugin implements Listener {
 
-    private TreeUtils treeUtils;
-    private final Utils utils = new Utils();
+    private boolean debugMode = false;
+    private final Utils utils = new Utils(this);
     private final Logger logger = this.getLogger();
     private final HashMap<Player, Location> pos1 = new HashMap<>();
     private final HashMap<Player, Location> pos2 = new HashMap<>();
@@ -36,7 +36,7 @@ public final class BigAcacia extends JavaPlugin implements Listener {
         this.treeUtils = new TreeUtils(this, config, saplingMaterial);
 
         // Register events
-        Bukkit.getPluginManager().registerEvents(new GrowthListener(logger, treeUtils), this);
+        Bukkit.getPluginManager().registerEvents(new GrowthListener(this, utils, treeUtils), this);
         Bukkit.getPluginManager().registerEvents(new SelectionListener(this, utils), this);
 
         // Register commands
@@ -47,7 +47,6 @@ public final class BigAcacia extends JavaPlugin implements Listener {
             logger.warning("Unable to register acacia command!");
         }
     }
-
 
     /**
      * @param player   The player the check it for
@@ -79,7 +78,20 @@ public final class BigAcacia extends JavaPlugin implements Listener {
             case 1 -> pos1.put(player, location);
             case 2 -> pos2.put(player, location);
         }
+    }
 
+    /**
+     * @return Whether debug mode is eneabled
+     */
+    public boolean debugMode() {
+        return debugMode;
+    }
+
+    /**
+     * @param debugMode Whether debug mode should be enabled
+     */
+    public void setDebugMode(boolean debugMode) {
+        this.debugMode = debugMode;
     }
 
 }

@@ -15,18 +15,23 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Logger;
 
 public class TreeUtils {
 
+    private final Utils utils;
+    private final Logger logger;
     private final BigAcacia plugin;
     private final FileConfiguration config;
     private final Material saplingMaterial;
-    private HashMap<String, Tree> trees = new HashMap<>();
+    private final HashMap<String, Tree> trees = new HashMap<>();
 
-    public TreeUtils(BigAcacia plugin, FileConfiguration config, Material saplingMaterial) {
+    public TreeUtils(BigAcacia plugin, Utils utils, FileConfiguration config, Material saplingMaterial) {
         this.plugin = plugin;
+        this.utils = utils;
         this.config = config;
         this.saplingMaterial = saplingMaterial;
+        this.logger = plugin.getLogger();
 
         ConfigurationSection section = config.getConfigurationSection("trees");
         if (section != null) {
@@ -36,11 +41,12 @@ public class TreeUtils {
                     Tree tree = this.loadTree(key, treeSection.getStringList("blocks"));
                     this.trees.put(key, tree);
                 } else {
-                    plugin.getLogger().warning("Tree " + key + " is not a valid configuration!");
+                    logger.warning("Tree " + key + " is not a valid configuration!");
                 }
             }
+            logger.info("Loaded " + trees.size() + " trees!");
         } else {
-            plugin.getLogger().warning("There are no trees to load!");
+            logger.warning("There are no trees to load!");
         }
     }
 
@@ -56,7 +62,7 @@ public class TreeUtils {
             blocks.add(new CustomBlock(Bukkit.createBlockData(lineSplit[0]), Integer.parseInt(lineSplit[1]), Integer.parseInt(lineSplit[2]), Integer.parseInt(lineSplit[3])));
         }
 
-        return new Tree(name, blocks, 100);
+        return new Tree(name, blocks);
     }
 
     /**
@@ -74,19 +80,19 @@ public class TreeUtils {
         if (world == null) return foundBlocks;
         if (saplingPosition.getBlock().getType() != saplingMaterial) return foundBlocks;
 
-        Bukkit.broadcastMessage("Checking north"); // debug
+        utils.sendDebugMessage("Checking north side");
         ArrayList<Block> northSide = getNorthSouthSide(saplingBlock, BlockFace.NORTH);
         if (northSide.size() == 3) {
-            Bukkit.broadcastMessage("North good"); // debug
+            utils.sendDebugMessage("North side valid");
             foundBlocks.addAll(northSide);
         } else {
-            Bukkit.broadcastMessage("North bad, checking south"); // debug
+            utils.sendDebugMessage("North side invalid ➜ checking south side");
             ArrayList<Block> southSide = getNorthSouthSide(saplingBlock, BlockFace.SOUTH);
             if (southSide.size() == 3) {
-                Bukkit.broadcastMessage("South good"); // debug
+                utils.sendDebugMessage("South side valid");
                 foundBlocks.addAll(southSide);
             } else {
-                Bukkit.broadcastMessage("South bad, we bad"); // debug
+                utils.sendDebugMessage("South side invalid ➜ structure invalid");
                 // not valid
             }
         }
@@ -110,19 +116,19 @@ public class TreeUtils {
         if (sideBlock != null && sideBlock.getType() == saplingMaterial) {
             foundBlocks.add(sideBlock);
 
-            Bukkit.broadcastMessage("  Checking west corner"); // debug
+            utils.sendDebugMessage("  Checking west corner");
             ArrayList<Block> cornerBlocks = getCorner(saplingBlock, northSouth == BlockFace.NORTH ? BlockFace.NORTH_WEST : BlockFace.SOUTH_WEST);
             if (cornerBlocks.size() == 2) {
-                Bukkit.broadcastMessage("  West corner good"); // debug
+                utils.sendDebugMessage("  West corner valid");
                 foundBlocks.addAll(cornerBlocks);
             } else {
-                Bukkit.broadcastMessage("  West bad, checking east corner"); // debug
+                utils.sendDebugMessage("  West corner invalid ➜ checking east corner");
                 cornerBlocks = getCorner(saplingBlock, northSouth == BlockFace.NORTH ? BlockFace.NORTH_EAST : BlockFace.SOUTH_EAST);
                 if (cornerBlocks.size() == 2) {
-                    Bukkit.broadcastMessage("  East corner good"); // debug
+                    utils.sendDebugMessage("  East corner valid");
                     foundBlocks.addAll(cornerBlocks);
                 } else {
-                    Bukkit.broadcastMessage("  East corner bad, we bad"); // debug
+                    utils.sendDebugMessage("  East corner invalid ➜ structure invalid");
                 }
             }
         }
@@ -143,20 +149,20 @@ public class TreeUtils {
 
         Block cornerBlock = saplingBlock.getRelative(corner);
         if (cornerBlock.getType() == saplingMaterial) {
-            Bukkit.broadcastMessage("   Corner good"); // debug
+            utils.sendDebugMessage("  " + corner.name().toLowerCase() + " corner valid");
             foundBlocks.add(cornerBlock);
 
-            // Check west block
-            Bukkit.broadcastMessage("   Checking side block"); // debug
+            // Check side block
+            utils.sendDebugMessage("   Checking side block");
             Block sideBlock = getSideBlock(saplingBlock, corner == BlockFace.NORTH_WEST || corner == BlockFace.SOUTH_WEST ? BlockFace.WEST : BlockFace.EAST);
             if (sideBlock != null) {
-                Bukkit.broadcastMessage("   Side block good"); // debug
+                utils.sendDebugMessage("   Side block valid");
                 foundBlocks.add(sideBlock);
             } else {
-                Bukkit.broadcastMessage("   Side block bad"); // debug
+                utils.sendDebugMessage("   Side block invalid");
             }
         } else {
-            Bukkit.broadcastMessage("    Corner bad"); // debug
+            utils.sendDebugMessage("   " + corner.name().toLowerCase() + " corner invalid");
         }
 
         return foundBlocks;
@@ -224,7 +230,6 @@ public class TreeUtils {
         this.trees.put(tree.getName(), tree);
 
         ConfigurationSection configSection = config.createSection("trees." + name);
-        configSection.set("chance", 100);
         configSection.set("blocks", deserializedBlocks);
         plugin.saveConfig();
     }

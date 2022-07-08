@@ -15,10 +15,13 @@ import java.util.logging.Logger;
 
 public class GrowthListener implements Listener {
 
+    private final Utils utils;
     private final Logger logger;
     private final TreeUtils treeUtils;
 
-    public GrowthListener(Logger logger, TreeUtils treeUtils) {
+    public GrowthListener(BigAcacia plugin, Utils utils, TreeUtils treeUtils) {
+        this.utils = utils;
+        this.logger = plugin.getLogger();
         this.treeUtils = treeUtils;
         this.logger = logger;
     }
@@ -50,7 +53,7 @@ public class GrowthListener implements Listener {
 
         // Check if corner is valid
         if (northWestCorner == null) {
-            logger.warning("A tree was not able to generate even though the blocks were valid!");
+            utils.sendDebugMessage("A tree was not able to generate even though the blocks were valid!");
             e.setCancelled(true);
             return;
         }

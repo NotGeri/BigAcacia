@@ -226,7 +226,6 @@ trees:
 
   variant_2:
     blocks:
-      - minecraft:acacia_sapling[stage=0] -6 0 -4
       - minecraft:acacia_log[axis=y] 0 0 0
       - minecraft:acacia_log[axis=y] 0 0 1
       - minecraft:acacia_log[axis=y] 1 0 0

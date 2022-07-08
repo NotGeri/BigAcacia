@@ -5,13 +5,11 @@ import java.util.ArrayList;
 public class Tree {
 
     private final String name;
-    private final int chance;
     private final ArrayList<CustomBlock> blocks;
 
-    public Tree(String name, ArrayList<CustomBlock> blocks, int chance) {
+    public Tree(String name, ArrayList<CustomBlock> blocks) {
         this.name = name;
         this.blocks = blocks;
-        this.chance = chance;
     }
 
     /**
@@ -19,13 +17,6 @@ public class Tree {
      */
     public String getName() {
         return name;
-    }
-
-    /**
-     * @return The % chance to spawn this tree
-     */
-    public int getChance() {
-        return chance;
     }
 
     /**

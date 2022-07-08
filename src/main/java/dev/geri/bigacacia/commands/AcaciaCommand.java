@@ -97,13 +97,7 @@ public class AcaciaCommand implements TabExecutor {
 
                 StringBuilder sb = new StringBuilder("\n&2&lAVAILABLE TREES&f:");
                 for (Map.Entry<String, Tree> treeEntry : treeUtils.getTrees().entrySet()) {
-                    sb.append("\n").append("&f• &a")
-                            .append(treeEntry.getKey())
-                            .append(" &8(")
-                            .append("&7")
-                            .append(treeEntry.getValue().getChance())
-                            .append("%% chance")
-                            .append("&8)");
+                    sb.append("\n").append("&f• &a").append(treeEntry.getKey());
                 }
 
                 player.sendMessage(utils.formatMessage(sb.append("\n&f").toString()));

@@ -220,7 +220,7 @@ public class TreeUtils {
 
         }
 
-        Tree tree = new Tree(name, blocks, 100);
+        Tree tree = new Tree(name, blocks);
         this.trees.put(tree.getName(), tree);
 
         ConfigurationSection configSection = config.createSection("trees." + name);

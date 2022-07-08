@@ -136,6 +136,20 @@ public class AcaciaCommand implements TabExecutor {
                 player.sendMessage(utils.formatMessage("&2&lSUCCESS&f: &aDeleted &2%s&a!", name));
             }
 
+            case "debug" -> {
+                if (!player.hasPermission("bigacacia.debug")) {
+                    player.sendMessage(utils.formatMessage("&4&lERROR&f: &cYou do not have access to this command!"));
+                    return true;
+                }
+
+                // Toggle debug mode
+                boolean debugMode = plugin.debugMode();
+                plugin.setDebugMode(!debugMode);
+
+                // Send message
+                player.sendMessage(utils.formatMessage("&2&lSUCCESS&f: &7Toggled debug mode " + (!debugMode ? "&aON" : "&cOFF") + "&7!"));
+            }
+
             default -> {
                 if (!player.hasPermission("bigacacia.help")) {
                     player.sendMessage(utils.formatMessage("&4&lERROR&f: &cYou do not have access to this command!"));
@@ -156,6 +170,7 @@ public class AcaciaCommand implements TabExecutor {
                 &f• &b/acacia save
                 &f• &b/acacia list
                 &f• &b/acacia delete
+                &f• &b/acacia debug
                 &b
                 """));
     }
@@ -164,6 +179,7 @@ public class AcaciaCommand implements TabExecutor {
         this.put("bigacacia.save", "save");
         this.put("bigacacia.list", "list");
         this.put("bigacacia.delete", "delete");
+        this.put("bigacacia.debug", "debug");
     }};
 
     @Override

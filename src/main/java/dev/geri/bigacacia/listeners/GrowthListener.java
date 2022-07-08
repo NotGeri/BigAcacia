@@ -42,9 +42,9 @@ public class GrowthListener implements Listener {
         // Get north-west corner
         Location northWestCorner = null;
         for (Block block : validSaplingBlocks) {
-            block.setType(Material.AIR);
-
-            if (northWestCorner == null) northWestCorner = block.getLocation();
+            if (northWestCorner == null) {
+                northWestCorner = block.getLocation();
+            }
 
             if (block.getX() < northWestCorner.getBlockX() || block.getZ() < northWestCorner.getBlockZ()) {
                 northWestCorner = block.getLocation();
@@ -58,14 +58,36 @@ public class GrowthListener implements Listener {
             return;
         }
 
-        // Set blocks
-        for (CustomBlock block : treeUtils.getRandomTreeBlocks()) {
-            Block b = block.getBlock(northWestCorner);
-            if (b != null) b.setBlockData(block.getBlockData());
+        ArrayList<CustomBlock> blocks = treeUtils.getRandomTreeBlocks();
+        if (blocks == null) {
+            logger.warning("A 2x2 acacia tree was attempted to be grown but there are no trees loaded!");
+            return;
         }
 
-        // Debug: remove
-        northWestCorner.getWorld().getBlockAt(northWestCorner).setType(Material.REDSTONE_BLOCK);
+        // See any existing blocks
+        for (CustomBlock customBlock : blocks) {
+            Block block = customBlock.getBlock(northWestCorner);
+
+            // Check if it's not air, the sapling or leaves
+            if (block == null || (block.getType() != Material.AIR && block.getType() != Material.ACACIA_LOG && block.getType() != Material.ACACIA_SAPLING && !Tag.LEAVES.isTagged(block.getType()))) {
+                e.setCancelled(true);
+                utils.sendDebugMessage("There was a block blocking tree growth: " + (block != null ? block.toString() : customBlock.toString()));
+                return;
+            }
+        }
+
+        // Delete saplings just in case
+        for (Block sapling : validSaplingBlocks) {
+            if (sapling.getType() == Material.ACACIA_SAPLING) sapling.setType(Material.AIR);
+        }
+
+        // Set blocks
+        for (CustomBlock customBlock : blocks) {
+            Block block = customBlock.getBlock(northWestCorner);
+            if (block != null) {
+                block.setBlockData(customBlock.getBlockData());
+            }
+        }
 
         // Clear original tree
         e.getBlocks().clear();

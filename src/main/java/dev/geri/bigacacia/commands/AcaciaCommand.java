@@ -187,14 +187,19 @@ public class AcaciaCommand implements TabExecutor {
         ArrayList<String> results = new ArrayList<>();
         ArrayList<String> arguments = new ArrayList<>();
 
-        for (Map.Entry<String, String> subCommand : subCommands.entrySet()) {
-            if (sender.hasPermission(subCommand.getKey())) arguments.add(subCommand.getValue());
-        }
 
         if (args.length == 1) {
-            for (String result : arguments) {
-                if (result.startsWith(args[0])) results.add(result);
+            for (Map.Entry<String, String> subCommand : subCommands.entrySet()) {
+                if (sender.hasPermission(subCommand.getKey())) arguments.add(subCommand.getValue());
             }
+        } else if (args.length == 2) {
+            switch (args[0].toLowerCase()) {
+                case "delete" -> arguments.addAll(treeUtils.getTrees().keySet());
+            }
+        }
+
+        for (String result : arguments) {
+            if (result.startsWith(args[args.length - 1])) results.add(result);
         }
 
         return results;

@@ -1,9 +1,12 @@
 package dev.geri.bigacacia.listeners;
 
+import dev.geri.bigacacia.BigAcacia;
 import dev.geri.bigacacia.utils.CustomBlock;
 import dev.geri.bigacacia.utils.TreeUtils;
+import dev.geri.bigacacia.utils.Utils;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Tag;
 import org.bukkit.TreeType;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
@@ -23,7 +26,6 @@ public class GrowthListener implements Listener {
         this.utils = utils;
         this.logger = plugin.getLogger();
         this.treeUtils = treeUtils;
-        this.logger = logger;
     }
 
     @EventHandler

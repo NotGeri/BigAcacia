@@ -7,9 +7,9 @@ A simple plugin to add support for 2x2 acacia trees.
 In order to use this plugin, simply drag & drop the latest release's JAR file into your `./plugins/` folder. After that,
 restart your server to apply the change.
 
-In-game, simply build out a 4x4 sapling structure such as this:
+In-game, simply build out a 2x2 sapling structure such as this:
 
-![img](docs/4x4.png)
+![img](docs/2x2.png)
 
 Once that's done, bonemeal it as any other valid sapling setup to grow it.
 
@@ -42,7 +42,7 @@ Other permissions:
 
 ## 🌴 Adding Trees
 
-By default, there are four variants of 4x4 acacia trees that have equal chances of spawning.
+By default, there are four variants of 2x2 acacia trees that have equal chances of spawning.
 
 If you'd like to add additional ones, please follow the steps below:
 

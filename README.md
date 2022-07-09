@@ -42,7 +42,7 @@ Other permissions:
 
 ## 🌴 Adding Trees
 
-By default, there are four variants of 4x4 acacia trees that have equal chances of spawning.
+By default, there are four variants of 2x2 acacia trees that have equal chances of spawning.
 
 If you'd like to add additional ones, please follow the steps below:
 
